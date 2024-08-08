@@ -12,7 +12,7 @@ services:
     image: prom/prometheus:v2.52.0
     container_name: prometheus
     volumes:
-      - ./prometheus:/etc/prometheus
+      - $OPT_STACKS_DIR\dockprom\prometheus:/etc/prometheus
       - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -33,7 +33,7 @@ services:
     image: prom/alertmanager:v0.27.0
     container_name: alertmanager
     volumes:
-      - ./alertmanager:/etc/alertmanager
+      - $OPT_STACKS_DIR\dockprom\alertmanager:/etc/alertmanager
     command:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
@@ -90,8 +90,8 @@ services:
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - $OPT_STACKS_DIR\dockprom\grafana\provisioning\dashboards:/etc/grafana/provisioning/dashboards
+      - $OPT_STACKS_DIR\dockprom\grafana\provisioning\datasources:/etc/grafana/provisioning/datasources
     environment:
       - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
@@ -119,13 +119,13 @@ services:
     image: caddy:2.7.6
     container_name: caddy
     ports:
-      - "3000:3000"
+      - "3030:3030"
       - "8080:8080"
       - "9090:9090"
       - "9093:9093"
       - "9091:9091"
     volumes:
-      - ./caddy:/etc/caddy
+      - $OPT_STACKS_DIR\dockprom\caddy:/etc/caddy
     environment:
       - ADMIN_USER=${ADMIN_USER:-admin}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
